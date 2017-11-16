@@ -1,0 +1,7 @@
+README
+
+Files for the Hackerbox #0024 - Vision Quest
+
+LiveCamTest.pde   Processing sketch that reads the video camera and sends data to the arduino sketch.
+
+main.cpp          Arduino sketch that reads the serial port for commands to controll the servos.
