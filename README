@@ -5,3 +5,10 @@ Files for the Hackerbox #0024 - Vision Quest
 LiveCamTest.pde   Processing sketch that reads the video camera and sends data to the arduino sketch.
 
 main.cpp          Arduino sketch that reads the serial port for commands to controll the servos.
+
+To get the processing.video library working on Ubuntu 16.04 you need to install gstreamer1.0 but
+there is an unmet dependency in gstreamer1.0-hybris, so do:
+
+list=$(apt-cache --names-only search ^gstreamer1.0-* | awk '{ print $1 }' | grep -v gstreamer1.0-hybris)
+sudo apt-get install $list
+
