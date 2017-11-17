@@ -1,13 +1,18 @@
 import gab.opencv.*;
 import processing.video.*;
 import processing.serial.*;
-import processing.sound.*;
+import ddf.minim.*;
 import java.awt.*;
 
 Capture video;
 OpenCV opencv;
 Serial port;
-SoundFile comeCloser, targetAquired;
+Minim minim1; 
+Minim minim2;
+AudioPlayer player;
+AudioPlayer targetAquired;
+
+//SoundFile comeCloser, targetAquired;
 
 boolean DEBUGGING = false;
 
@@ -29,8 +34,13 @@ int midScreenWindow = 10;  //This is the acceptable 'error' for the center of th
 //The degree of change that will be applied to the servo each time we update the position.
 int stepSize=1;
 
-
+boolean newTarget = true;
+boolean outOfRange = true;
+String[] deploy = {"iSeeYou.wav", "targetAquired.wav", "thereYouAre.wav"};
+String[] searching = {"isAnyoneThere.wav", "comeCloser.wav", "wouldYouComeOverHere.wav"};
+  
 void setup() {
+
   size(320,240);
   //  size(640, 480);
   midScreenY = (height/2);
@@ -51,12 +61,13 @@ void setup() {
   port.write(servoPanPosition);   //Send the Pan Position (currently 90 degrees)
 
   video.start();
-  comeCloser = new SoundFile(this, "comeCloser.wav");
-  targetAquired = new SoundFile(this, "targetAquired.wav");
+  minim1 = new Minim(this);
+//  minim2 = new Minim(this);
+//  comeCloser = minim1.loadFile("comeCloser.wav");
+//  targetAquired = minim2.loadFile("targetAquired.wav");
 }
 
 void draw() {
-  boolean newTarget = false;
   scale(1);
   opencv.loadImage(video);
 
@@ -78,6 +89,14 @@ void draw() {
     //If a face was found, find the midpoint of the first face in the frame.
     //NOTE: The .x and .y of the face rectangle corresponds to the upper left corner of the rectangle,
     //      so we manipulate these values to find the midpoint of the rectangle.
+    outOfRange = true;
+    if ( newTarget ) {
+      int index = int(random(deploy.length));
+      player = minim1.loadFile(deploy[index]);
+      player.rewind();
+      player.play();
+      newTarget = false;
+    }
     midFaceY = faces[0].y + (faces[0].height/2);
     midFaceX = faces[0].x + (faces[0].width/2);
     if ( DEBUGGING ) {
@@ -119,8 +138,15 @@ void draw() {
       }
     }
   } else {
-    comeCloser.play();
-  }
+    newTarget = true;
+    if (outOfRange) {
+      int index = int(random(searching.length));
+      player = minim1.loadFile(searching[index]);
+      player.rewind();
+      player.play();
+      outOfRange = false;
+    }
+}
   //Update the servo positions by sending the serial command to the Arduino.
   port.write(tiltChannel);      //Send the tilt servo ID
   port.write(servoTiltPosition); //Send the updated tilt position.
