@@ -43,8 +43,8 @@ boolean newTarget = true;
 boolean outOfRange = true;
 
 // arrays to store the filenames of our deploy and our searching sounds
-String[] deployFiles = {"iSeeYou.wav", "targetAquired.wav", "thereYouAre.wav"};
-String[] searchingFiles = {"isAnyoneThere.wav", "comeCloser.wav", "wouldYouComeOverHere.wav"};
+String[] deployFiles = {"iSeeYou.wav", "targetAquired.wav", "thereYouAre.wav", "dispensingProduct.wav", "firing.wav", "gotcha.wav", "hello.wav", "hi.wav"};
+String[] searchingFiles = {"isAnyoneThere.wav", "comeCloser.wav", "wouldYouComeOverHere.wav", "heloooo.wav", "searching.wav", "sentryModeActivated.wav", "canvasing.wav" };
 
 // declare arrays to store the soundfiles for searching and deploy
 SoundFile[] deploy = new SoundFile[deployFiles.length];
